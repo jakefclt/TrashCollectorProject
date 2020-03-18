@@ -13,6 +13,12 @@ namespace TrashCollector.Data
             : base(options)
         {
         }
+
+        //public DbSet<IdentityUser> IdentityUsers { get; set; }
+
+        //public DbSet<Customer> Customers { get; set; }
+
+        //public DbSet<Employee> Employees { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -22,8 +28,10 @@ namespace TrashCollector.Data
             {
                 Name = "Admin",
                 NormalizedName = "ADMIN"
-            }
-            );
+            });
+
+          
+
         }
     }
 }
