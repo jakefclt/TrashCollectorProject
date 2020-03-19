@@ -14,14 +14,29 @@ namespace TrashCollector.Data
             : base(options)
         {
         }
+        public DbSet<TrashCollector.Models.Customer> Customer { get; set; }
+        public DbSet<TrashCollector.Models.Employee> Employee { get; set; }
 
-        //public DbSet<IdentityUser> IdentityUsers { get; set; }
-
-        //public DbSet<Customer> Customers { get; set; }
-
-        //public DbSet<Employee> Employees { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+            builder.Entity<IdentityRole>()
+            .HasData(
+            new IdentityRole
+            {
+                Name = "Customer",
+                NormalizedName = "Customer"
+            });
+
+            base.OnModelCreating(builder);
+            builder.Entity<IdentityRole>()
+            .HasData(
+            new IdentityRole
+            {
+                Name = "Employee",
+                NormalizedName = "Employee"
+            });
+
             base.OnModelCreating(builder);
             builder.Entity<IdentityRole>()
             .HasData(
@@ -31,22 +46,11 @@ namespace TrashCollector.Data
                 NormalizedName = "ADMIN"
             });
 
-          
+
 
         }
 
-        //public DbSet<IdentityUser> IdentityUsers { get; set; }
-
-        //public DbSet<Customer> Customers { get; set; }
-
-        //public DbSet<Employee> Employees { get; set; }
-        public DbSet<TrashCollector.Models.Customer> Customer { get; set; }
-
-        //public DbSet<IdentityUser> IdentityUsers { get; set; }
-
-        //public DbSet<Customer> Customers { get; set; }
-
-        //public DbSet<Employee> Employees { get; set; }
-        public DbSet<TrashCollector.Models.Employee> Employee { get; set; }
+      
+     
     }
 }
