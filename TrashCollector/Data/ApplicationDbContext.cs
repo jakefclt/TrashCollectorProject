@@ -25,7 +25,7 @@ namespace TrashCollector.Data
             new IdentityRole
             {
                 Name = "Customer",
-                NormalizedName = "Customer"
+                NormalizedName = "CUSTOMER"
             });
 
             base.OnModelCreating(builder);
@@ -34,7 +34,7 @@ namespace TrashCollector.Data
             new IdentityRole
             {
                 Name = "Employee",
-                NormalizedName = "Employee"
+                NormalizedName = "EMPLOYEE"
             });
 
             base.OnModelCreating(builder);

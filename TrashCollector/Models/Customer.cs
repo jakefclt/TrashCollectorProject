@@ -10,8 +10,8 @@ namespace TrashCollector.Models
 {
     public class Customer
     {   
-        [Key]
-        public int Id { get; set; }
+        
+        public int CustomerId { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -50,6 +50,7 @@ namespace TrashCollector.Models
 
         [Display(Name = "Balance")]
         public double Balance { get; set; }
+        public bool PickUp { get; set; }
         
 
         [ForeignKey("IdentityUser")]

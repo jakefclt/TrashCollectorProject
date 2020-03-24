@@ -10,8 +10,8 @@ using TrashCollector.Data;
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200319214210_add-migration dbset")]
-    partial class addmigrationdbset
+    [Migration("20200323194351_SecondMigration")]
+    partial class SecondMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,22 +50,22 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4f28ca8d-d7a7-4155-ad81-ee618e594776",
-                            ConcurrencyStamp = "f8a45803-2ab3-4166-9028-00ebdc89a850",
+                            Id = "a4b85c6a-f335-4f9a-8e7b-9827915c91dc",
+                            ConcurrencyStamp = "832d7800-f82e-4970-9d9c-3ca10ad0bf4e",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
-                            Id = "153adf10-1144-4c74-b79c-a82a0ce8624f",
-                            ConcurrencyStamp = "7e623eed-b086-4850-9aa0-0eda370e2f2e",
+                            Id = "62369b33-8142-4081-9236-fe6992783a22",
+                            ConcurrencyStamp = "7f9f1442-cf6b-4bbf-a5c0-3c9754a9aae3",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         },
                         new
                         {
-                            Id = "a33f7cde-0b55-4da9-9398-9cb1b8220b42",
-                            ConcurrencyStamp = "6b9c32af-c30a-428b-836a-5fd92487e01a",
+                            Id = "ac6beb4d-491a-4d0b-8492-41b70e29894b",
+                            ConcurrencyStamp = "f8234b97-ed84-4b6e-8d21-0d14e2308ea5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -242,7 +242,7 @@ namespace TrashCollector.Data.Migrations
 
             modelBuilder.Entity("TrashCollector.Models.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -286,7 +286,7 @@ namespace TrashCollector.Data.Migrations
                     b.Property<bool>("isSuspended")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("CustomerId");
 
                     b.HasIndex("IdentityUserId");
 
@@ -303,13 +303,21 @@ namespace TrashCollector.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PickUp")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");
 
                     b.HasKey("EmployeeId");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Employees");
                 });
@@ -366,6 +374,13 @@ namespace TrashCollector.Data.Migrations
                 });
 
             modelBuilder.Entity("TrashCollector.Models.Customer", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("TrashCollector.Models.Employee", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()

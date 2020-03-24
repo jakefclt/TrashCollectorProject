@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TrashCollector.Data;
 using TrashCollector.Models;
@@ -24,7 +22,29 @@ namespace TrashCollector.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            //grabs the PK of the user who is currently logged in (right after registration or login)
+            //PK of identity user
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employeeLoggedIn = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            //customers in my zip code
+            var customersInZip = _context.Customers.Where(c => c.Zipcode == employeeLoggedIn.ZipCode).ToListAsync();
+
+
+            //customers that have pickup today (day of week)
+            //DateTime.Now
+            //customersInZip
+            
+            return View(await customersInZip);
+        }
+
+        public IActionResult FilterDays(string day)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employeeLoggedIn = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            //query customers table by filtered day and zipcode
+            var pickupByDay = _context.Customers.Where(c => c.PickupDay == day && c.Zipcode == employeeLoggedIn.ZipCode).ToListAsync();
+            return View(pickupByDay);
         }
 
         // GET: Employees/Details/5
@@ -35,13 +55,11 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+            var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
-
             return View(employee);
         }
 
@@ -60,6 +78,11 @@ namespace TrashCollector.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+               
+                employee.IdentityUserId = userId;
+
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

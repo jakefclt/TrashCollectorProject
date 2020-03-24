@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200319211949_DbSet.cs" />
     <Compile Remove="Data\Migrations\20200319211949_DbSet.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200323194351_SecondMigration.cs" />
+    <Compile Remove="Data\Migrations\20200323194351_SecondMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200323195435_third.cs" />
+    <Compile Remove="Data\Migrations\20200323195435_third.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200324035441_fourth.cs" />
+    <Compile Remove="Data\Migrations\20200324035441_fourth.Designer.cs" />
   </ItemGroup>
 
 

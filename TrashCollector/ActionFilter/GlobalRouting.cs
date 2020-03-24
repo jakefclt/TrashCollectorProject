@@ -35,6 +35,7 @@ public class GlobalRouting : IActionFilter
         }
         public void OnActionExecuted(ActionExecutedContext context)
         {
+           
         }
     }
 }
