@@ -50,6 +50,8 @@ namespace TrashCollector.Models
 
         [Display(Name = "Balance")]
         public double Balance { get; set; }
+
+        [Display(Name = "Picked Up")]
         public bool PickUp { get; set; }
         
 

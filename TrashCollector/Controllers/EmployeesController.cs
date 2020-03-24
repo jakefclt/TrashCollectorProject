@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -17,17 +18,22 @@ namespace TrashCollector.Controllers
         public EmployeesController(ApplicationDbContext context)
         {
             _context = context;
+           
         }
+
+        public DateTime DateTime { get;}
 
         // GET: Employees
         public async Task<IActionResult> Index()
         {
             //grabs the PK of the user who is currently logged in (right after registration or login)
             //PK of identity user
+
+            
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employeeLoggedIn = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
-            //customers in my zip code
+            
             var customersInZip = _context.Customers.Where(c => c.Zipcode == employeeLoggedIn.ZipCode).ToListAsync();
 
 
@@ -38,14 +44,37 @@ namespace TrashCollector.Controllers
             return View(await customersInZip);
         }
 
-        public IActionResult FilterDays(string day)
+        public IActionResult FilterDays()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult FilterDays(FilterDayViewModel filterDayViewModel)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employeeLoggedIn = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            //query customers table by filtered day and zipcode
-            var pickupByDay = _context.Customers.Where(c => c.PickupDay == day && c.Zipcode == employeeLoggedIn.ZipCode).ToListAsync();
-            return View(pickupByDay);
+            
+            var pickupByDay = _context.Customers.Where(c => c.PickupDay == filterDayViewModel.Day && c.Zipcode == employeeLoggedIn.ZipCode).ToList();
+            return View("Index", pickupByDay);
         }
+
+        public IActionResult ConfirmPickup()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+
+        public IActionResult ConfirmPickupConfirmation(ConfirmPickupViewModel confirmPickupViewModel)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employeeLoggedIn = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            var pickupConfirmed = _context.Customers.Where(c => c.PickUp == confirmPickupViewModel.Pickup).ToList();
+            return View("Index", pickupConfirmed);
+        }
+
 
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -69,9 +98,6 @@ namespace TrashCollector.Controllers
             return View();
         }
 
-        // POST: Employees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmployeeId,FirstName,LastName,ZipCode")] Employee employee)

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<TrashCollector.Models.ConfirmPickupViewModel>
+
+@{
+    ViewData["Title"] = "ConfirmPickup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ConfirmPickup</h1>
+<input type="button" value="CONFIRM PICKUP" onclick="location.href='@Url.Action("ConfirmPickupConfirmation", "Employees")'" />
+
+
+
