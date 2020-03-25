@@ -122,10 +122,13 @@ namespace TrashCollector.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id, Customer customers)
+        public ActionResult DeleteConfirmed(int id, Customer customer)
         {
-            var customer =  _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customers);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customers = _context.Customers.Where(c => c.IdentityUserId == userId).ToList();
+
+           
+            _context.Customers.Remove(customer);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }

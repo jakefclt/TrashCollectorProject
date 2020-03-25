@@ -47,15 +47,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Balance)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayNameFor(model => model.PickUp)
+            </td>*@
+            <td>
+                <a asp-action="ConfirmPickup" asp-route-id="@item.CustomerId">Confirm Pickup</a>
             </td>
             <td>
                 @Html.ActionLink("Filter by Day", "FilterDays", "Employees")
             </td>
-            <td>
-                @Html.ActionLink("Confirm Pickup", "ConfirmPickup", "Employees")
-            </td>
+
 
         </tr>
 }

@@ -59,8 +59,10 @@ namespace TrashCollector.Controllers
             return View("Index", pickupByDay);
         }
 
-        public IActionResult ConfirmPickup()
+        public IActionResult ConfirmPickup(int id)
         {
+            ConfirmPickupViewModel viewModel = new ConfirmPickupViewModel();
+            viewModel.CustomerId = id;
             return View();
         }
 
@@ -72,6 +74,9 @@ namespace TrashCollector.Controllers
             var employeeLoggedIn = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
             var pickupConfirmed = _context.Customers.Where(c => c.PickUp == confirmPickupViewModel.Pickup).ToList();
+            
+                                                    
+            _context.SaveChanges();
             return View("Index", pickupConfirmed);
         }
 
